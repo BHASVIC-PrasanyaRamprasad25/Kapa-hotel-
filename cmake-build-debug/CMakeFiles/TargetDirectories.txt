@@ -1,0 +1,3 @@
+C:/Users/prasanya.ramprasad25/Downloads/Kapa-hotel-/cmake-build-debug/CMakeFiles/Kapa_hotel_.dir
+C:/Users/prasanya.ramprasad25/Downloads/Kapa-hotel-/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/prasanya.ramprasad25/Downloads/Kapa-hotel-/cmake-build-debug/CMakeFiles/rebuild_cache.dir

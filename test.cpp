@@ -1,9 +1,13 @@
+//
+// Created by prasanya.ramprasad25 on 19/11/2025.
+//
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
 #include <time.h>
+#include <math.h>
 
 
 
@@ -31,13 +35,13 @@ int roomPrices[6] = {100, 100, 85, 75, 75, 50};
 int boardPrices[3] = {20, 15, 5};
 
 /* --- nameCheck, daysInMonth, confirmOrQuit, getBoardPrice, etc. remain unchanged --- */
-//TODO Fix formatting for entering date, should be DD/MM/YYYY FORMAT
+//TODO Add check out function once complete
 
 
-int nameCheck(const char *s ) {
+int nameCheck(const char *s ) { //validation for name
     int k=0;
     if (strlen(s) >16 || strlen(s) <=0) {
-        printf(" The name you etered is ethier too long or too short \n");
+        printf(" The name you entered is either too long or too short \n");
         k++;
     }
 
@@ -47,7 +51,7 @@ int nameCheck(const char *s ) {
         }
     }
 
-    if (k>0){ printf(" The name cant have any unusuall characthers\n");}
+    if (k>0){ printf(" The name can't have any unusual characters\n");}
     else if (k==0){return 1;}
 }
 
@@ -114,7 +118,7 @@ void checkin() {
     }
 
     while (true) {
-        printf("Enter main guest's DOB (DD/MM/YY): ");
+        printf("Enter main guest's DOB (DD/MM/YYYY): ");
         if (scanf("%d/%d/%d", &day, &month, &year) != 3) {
             printf("Invalid format.\n");
             while (getchar() != '\n');
@@ -125,12 +129,12 @@ void checkin() {
             continue;
         }
         if (year>2007) {
-            printf("children cant sign up plaese bring and adult.\n");
+            printf("children can't sign up please bring an adult and enter their DOB.\n");
             continue;
 
         }
         if (year<1925) {
-            printf("You cant be more than 100 years old that is not possible.\n");
+            printf("You can't be more than 100 years old, that is not possible.\n");
             continue;
         }
         int d= (confirmOrQuit("Is this correct?"));
@@ -192,7 +196,7 @@ void checkin() {
     while (true) {
         printf("\nAvailable rooms:\n");
         for (int i = 0; i < 6; i++)
-            printf("Room %d - GDP%d - %s\n", i + 1, roomPrices[i], roomsAvailable[i] ? "Available" : "Occupied");
+            printf("Room %d - GBP%d - %s\n", i + 1, roomPrices[i], roomsAvailable[i] ? "Available" : "Occupied");
 
         printf("Choose room number: ");
         scanf("%d", &roomChoice);
@@ -220,6 +224,7 @@ void checkin() {
     }
 
     roomsAvailable[roomChoice - 1] = false;
+    //generate user's bookingID by concatenating random number and surname
     int r;
     srand(time(NULL));
     r = rand() % 100;
@@ -237,7 +242,7 @@ void checkin() {
     printf("\n************* Check-in Complete ***********\n");
 }
 
-void storeInfo() {
+void storeInfo() { //write all of the check in data to the global vars
     guestStayLengths[guestCount] = stayLength;
     guestRoomChoices[guestCount] = roomChoice;
     strcpy(guestBoardTypes[guestCount], boardType);
@@ -274,7 +279,7 @@ void findAndPrintByID() {
 
 
 
-
+//table system to determine availability
 int endor7 = 0;
 int naboo7 = 0;
 int tatooine7 = 0;
@@ -282,8 +287,8 @@ int endor9 = 0;
 int naboo9 = 0;
 int tatooine9 = 0;
 
-char bookTable(int numOfGuests);
-void processTableChoice(int numOfGuests);
+char bookTable(int numOfGuests); //function - user to enter choice of table
+void processTableChoice(int numOfGuests); //procedure - determine if user's table can be booked
 
 void dinnerSystem() {
     while (1) {
@@ -356,18 +361,23 @@ char bookTable(int numOfGuests) {
             if (!naboo9) printf("E) Naboo at 9pm\n");
             if (!tatooine9) printf("F) Tatooine at 9pm\n");
 
-            printf("Enter your choice of table (letter): ");
+            printf("Enter your choice of table (Enter letter): ");
             fflush(stdin);
-            scanf(" %c", &choice);
-            printf("Is this correct? (Y/N): ");
+            scanf("%c", &choice);
             char confirm;
-            scanf(" %c", &confirm);
-
-            if (toupper(confirm)=='N') choice='X';
+            printf("Is this correct? (Y/N): ");
+            fflush(stdin);
+            scanf("%c", &confirm);
+            if (toupper(confirm) == 'N') {
+                choice = 'X'; //dummy value given so the do-while loop repeats
+            }
             choice = toupper(choice);
+            if (choice != 'A' && choice != 'B' && choice != 'C' && choice != 'D' && choice != 'E' && choice != 'F' && choice != 'X') {
+                printf("Please enter a VALID option from the given list.\n");
+            }
 
         } while(choice!='A'&&choice!='B'&&choice!='C'&&choice!='D'&&choice!='E'&&choice!='F');
-
+        //dummy values given to choice if user tries to book an occupied table
         if (choice=='A' && endor7) return 'X';
         if (choice=='B' && naboo7) return 'X';
         if (choice=='C' && tatooine7) return 'X';
@@ -384,14 +394,12 @@ char bookTable(int numOfGuests) {
 }
 
 
-
-
 int main() {
 
-    for (int i=0;i<100000;i++) {
+    while (true) {
         char choice;
 
-        printf("Do you want to Check In (C), Check Out (O), Dinner (D), CHECK info(I), or Quit (Q)? ");
+        printf("Do you want to Check In (C), Check Out (O), Dinner (D), Check info(I), or Quit (Q)? ");
         scanf(" %c", &choice);
         choice = toupper(choice);
 
@@ -419,3 +427,4 @@ int main() {
 
     return 0;
 }
+
